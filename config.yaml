@@ -1,0 +1,37 @@
+rules:
+  relevant_keywords:
+    - "account"
+    - "invoice"
+    - "payment"
+    - "order"
+    - "subscription"
+    - "reset password"
+  irrelevant_patterns:
+    - "weather"
+    - "sports"
+    - "joke"
+    - "news"
+    - "movie"
+  vague_patterns:
+    - "help"
+    - "question"
+    - "info"
+    - "support"
+    - "assist"
+
+examples:
+  relevant:
+    - "How do I reset my account password?"
+    - "What is the status of my last order?"
+    - "Can I get a copy of my invoice?"
+    - "How do I update my payment method?"
+  irrelevant:
+    - "Tell me a joke."
+    - "What's the weather today?"
+    - "Who won the football game?"
+    - "Show me the latest movie releases."
+  vague:
+    - "I need help."
+    - "Can you assist me?"
+    - "Support."
+    - "Question."
