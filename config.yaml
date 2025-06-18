@@ -24,7 +24,7 @@ examples:
     - "How do I reset my account password?"
     - "What is the status of my last order?"
     - "Can I get a copy of my invoice?"
-    - "How do I update my payment method?"
+    - "What is the status of my receivable?"
   irrelevant:
     - "Tell me a joke."
     - "What's the weather today?"

@@ -10,11 +10,17 @@ class QueryClassifier:
         self.rule_classifier = RuleBasedClassifier(self.config.rules)
         self.llm_classifier = LLMClassifier(examples=self.config.examples)
 
-    def classify(self, query: str) -> QueryLabel:
+    def classify(self, query: str):
         label = self.rule_classifier.classify(query)
         if label:
-            return label
-        return self.llm_classifier.classify(query)
+            return label, "rule"
+        try:
+            label = self.llm_classifier.classify(query)
+            return label, "llm"
+        except Exception as e:
+            print(f"LLM classification failed: {e}")
+            return QueryLabel.UNKNOWN, "llm (failed)"
 
-    def action(self, label: QueryLabel) -> str:
+
+    def action(self, label):
         return action_for(label)

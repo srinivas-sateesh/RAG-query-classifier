@@ -1,11 +1,9 @@
-from rag_query_classifier import QueryClassifier, QueryLabel
+from rag_query_classifier import QueryClassifier
 
-# Initialize the classifier (adjust config path if needed)
-qc = QueryClassifier("rag_query_classifier/config.yaml")
-
-# Classify a query
-query = "Can you help me with my invoice?"
-label = qc.classify(query)
-
-print(f"Classification: {label.value}")  # e.g., "relevant"
-print(f"Action: {qc.action(label)}")     # e.g., "Proceed to LLM answer."
+qc = QueryClassifier("config.yaml")
+query = "Is my business prjhih?"
+label, component = qc.classify(query)
+print(query)
+print(f"Classification: {label}")
+print(f"Classified by: {component}")
+print(f"Action: {qc.action(label)}")
