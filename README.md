@@ -198,6 +198,72 @@ The classifier uses a multi-level approach:
 - **Irrelevant**: Entertainment, weather, sports, etc.
 - **Vague**: Too short, unclear, or contains non-English text
 
+## 🏗️ Design Decisions
+
+### Why Rule-Based + LLM Instead of Embeddings?
+
+The classifier intentionally uses a **rule-based + LLM** approach rather than embedding-based classification. Here's why:
+
+#### **Embedding-Based Approach (Not Used)**
+```python
+# What we could have done:
+embeddings = embed_query(query)
+similarity_scores = cosine_similarity(embeddings, example_embeddings)
+classification = argmax(similarity_scores)
+```
+
+**Problems with embedding-based classification:**
+- **🔧 Configuration Dependency**: Requires carefully curated example embeddings
+- **📊 Training Data Needs**: Needs many high-quality examples per category
+- **🎯 Threshold Tuning**: Requires manual similarity threshold tuning
+- **⚡ Performance**: Embedding generation adds latency
+- **🎲 Inconsistent Results**: Similarity scores can be unpredictable
+
+#### **Rule-Based + LLM Approach (Current)**
+```python
+# What we actually do:
+if rule_matches(query):
+    return rule_classification
+else:
+    return llm_classification(query)
+```
+
+**Benefits of our approach:**
+- **🚀 Fast Rules**: Instant classification for common patterns
+- **🧠 Intelligent LLM**: Handles complex, nuanced cases
+- **🔧 Simple Configuration**: Just keywords and patterns
+- **⚡ Performance**: Rules are fast, LLM only when needed
+- **🎯 Predictable**: Clear, deterministic rule matching
+- **🔄 Low Maintenance**: Easy to update rules and examples
+
+#### **Trade-offs**
+
+| Aspect | Rule-Based + LLM | Embedding-Based |
+|--------|------------------|-----------------|
+| **Speed** | ⚡ Fast rules, slow LLM | 🐌 Embedding generation |
+| **Accuracy** | 🎯 High (LLM reasoning) | 📊 Variable (similarity) |
+| **Configuration** | 🔧 Simple keywords | 📝 Complex examples |
+| **Predictability** | ✅ Deterministic | ❓ Unpredictable |
+| **Domain Adaptation** | 🎯 Easy | 🔄 Requires retraining |
+
+### **When to Use Each Approach**
+
+**Use Rule-Based + LLM (Current) when:**
+- You want fast, predictable classification
+- You have clear domain rules and patterns
+- You want low maintenance overhead
+- You need explainable reasoning
+- You have limited training data
+
+**Consider Embedding-Based when:**
+- You have extensive, high-quality training data
+- You need semantic similarity matching
+- You're willing to tune thresholds carefully
+- You have the resources for embedding generation
+- You need to handle many similar examples
+
+Our approach prioritizes **simplicity**, **speed**, and **maintainability** over the complexity of embedding-based systems.
+
 ## 🔧 Advanced Configuration
 
 ### Using Different Models
