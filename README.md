@@ -373,9 +373,7 @@ This will test various query types and show performance metrics.
 4. Add tests
 5. Submit a pull request
 
-## 📄 License
 
-[Add your license here]
 
 ## 🙏 Acknowledgments
 
