@@ -33,8 +33,7 @@ A fast, domain-agnostic query classification system that determines whether user
    # Activate virtual environment
    # On macOS/Linux:
    source venv/bin/activate
-   # On Windows:
-   venv\Scripts\activate
+
    ```
 
 3. **Install dependencies:**
