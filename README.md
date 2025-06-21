@@ -1,5 +1,7 @@
 # RAG Query Classifier
 
+**Disclaimer: This project is experimental and not ready for production use.**
+
 A fast, domain-agnostic query classification system that determines whether user queries are **relevant**, **irrelevant**, or **vague**. Perfect for RAG (Retrieval-Augmented Generation) systems to filter and route queries appropriately.
 
 ## 🚀 Features
@@ -33,7 +35,8 @@ A fast, domain-agnostic query classification system that determines whether user
    # Activate virtual environment
    # On macOS/Linux:
    source venv/bin/activate
-
+   # On Windows:
+   venv\Scripts\activate
    ```
 
 3. **Install dependencies:**
@@ -196,6 +199,15 @@ The classifier uses a multi-level approach:
 - **Relevant**: Clear, specific questions related to your domain
 - **Irrelevant**: Entertainment, weather, sports, etc.
 - **Vague**: Too short, unclear, or contains non-English text
+
+## Future Work
+
+This classifier is still in early development. Key areas for improvement include:
+
+-   **High Throughput:** The current implementation is not optimized for high-volume, concurrent requests. Future work should focus on improving performance and scalability.
+-   **Logging:** Comprehensive logging needs to be implemented to track classification decisions, performance metrics, and errors.
+-   **Testing:** A more robust test suite is required to ensure reliability and prevent regressions. This includes unit tests, integration tests, and performance tests.
+-   **Capturing False Positives/Negatives:** A system for capturing, reviewing, and iterating on incorrect classifications (both false positives and false negatives) is crucial for improving the accuracy of both the rule-based and LLM-based components.
 
 ## 🏗️ Design Decisions
 
@@ -373,7 +385,9 @@ This will test various query types and show performance metrics.
 4. Add tests
 5. Submit a pull request
 
+## 📄 License
 
+[Add your license here]
 
 ## 🙏 Acknowledgments
 

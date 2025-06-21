@@ -9,16 +9,21 @@ qc = QueryClassifier("config.yaml", model="phi3:mini")
 if hasattr(qc, '_query_cache'):
     qc._query_cache.clear()
 
-# Test queries (domain agnostic)
+# Test queries (domain-specific for liver disease, with a mix of rule-based and LLM-based cases)
 queries = [
-    "Is my business prjhih?",  # Should be vague (non-English)
-    "How do I solve this problem?",  # Should be relevant (clear question)
-    "What's the weather like?",  # Should be relevant (clear question)
-    "Is my business prjhih?",  # Should be cached (same as first)
-    "How do I fix this?",  # Should be relevant (clear question)
-    "xyz",  # Should be vague (too short)
-    "What is the meaning of life?",  # Should be relevant (philosophical but clear)
-    "asdfgh",  # Should be vague (gibberish)
+    # Rule-based classifications
+    "What are the symptoms of liver cirrhosis?",  # Relevant (keyword: "liver cirrhosis")
+    "What's the weather like in New York?",      # Irrelevant (keyword: "weather")
+    "I need help",                               # Vague (pattern from config)
+    "Tell me about fatty liver disease",         # Relevant (keyword: "fatty liver disease")
+    "Who won the last football game?",           # Irrelevant (keyword: "football")
+
+    # LLM-based classifications
+    "My skin and eyes are turning yellow.",      # Relevant (symptom of jaundice, no keyword)
+    "Is it safe to drink alcohol every day?",    # Relevant (related to liver health)
+    "What is the capital of Mongolia?",          # Irrelevant (general knowledge)
+    "My system isn't functioning as expected.",  # Vague (no specific pattern)
+    "Is it safe to drink alcohol every day?",    # Cached (same as a previous query)
 ]
 
 print("Testing phi3:mini classifier performance...\n")
