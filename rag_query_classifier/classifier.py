@@ -7,7 +7,7 @@ import re
 
 
 class QueryClassifier:
-    def __init__(self, config_path="config.yaml", model="phi3:mini"):
+    def __init__(self, config_path="config.yaml", model="phi3:instruct"):
         self.config = Config(config_path)
         self.rule_classifier = RuleBasedClassifier(self.config.rules)
         self.llm_classifier = LLMClassifier(examples=self.config.examples, model=model)

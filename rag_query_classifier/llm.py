@@ -5,7 +5,7 @@ from .exceptions import LLMError
 
 
 class LLMClassifier:
-    def __init__(self, endpoint="http://localhost:11434/api/generate", model="phi3:mini", examples=None, cache_size=1000):
+    def __init__(self, endpoint="http://localhost:11434/api/generate", model="phi3:instruct", examples=None, cache_size=1000):
         self.endpoint = endpoint
         self.model = model
         self.examples = examples or {}
@@ -38,27 +38,29 @@ Rules:
 - Confidence score should be between 0.0 and 1.0
 - Provide brief reasoning for your classification
 - Classify based on query clarity and relevance to any domain
-
-Examples:
-{"label": "relevant", "confidence_score": 0.9, "reasoning": "Clear, specific question that can be answered"}
-{"label": "vague", "confidence_score": 0.8, "reasoning": "Contains non-English words making it unclear"}
-{"label": "irrelevant", "confidence_score": 0.7, "reasoning": "Question unrelated to any specific domain or context"}
-
 """
         return self._system_prompt
 
     def _get_examples_prompt(self):
         if self._examples_prompt is None:
-            prompt = ""
+            if not self.examples:
+                self._examples_prompt = ""
+                return self._examples_prompt
+
+            example_prompts = []
             for label, exs in self.examples.items():
                 for ex in exs:
-                    prompt += (
-                        f"<example>\n"
-                        f"<query>{ex}</query>\n"
-                        f"<label>{label}</label>\n"
-                        f"</example>\n"
-                    )
-            self._examples_prompt = prompt
+                    mock_response = {
+                        "label": label,
+                        "confidence_score": 0.9,
+                        "reasoning": f"Example of a {label} query."
+                    }
+                    example_prompts.append(f'Query: "{ex}"\nJSON Response: {json.dumps(mock_response)}')
+
+            if example_prompts:
+                self._examples_prompt = "Here are some examples:\n\n" + "\n\n".join(example_prompts) + "\n\n"
+            else:
+                self._examples_prompt = ""
         return self._examples_prompt
 
     def _cache_result(self, query: str, result: ClassificationResult):
@@ -76,7 +78,7 @@ Examples:
         self._cache_keys.append(query)
 
     def build_user_prompt(self, query: str):
-        return f"Classify this query and respond with ONLY valid JSON:\nQuery: {query}\nJSON Response:"
+        return f'Query: "{query}"\nJSON Response:'
 
     def classify(self, query: str) -> ClassificationResult:
         # Check cache first
@@ -90,12 +92,22 @@ Examples:
         system_prompt = self._get_system_prompt()
         examples_prompt = self._get_examples_prompt()
         user_prompt = self.build_user_prompt(query)
-        full_prompt = system_prompt + examples_prompt + user_prompt
+        full_user_prompt = examples_prompt + user_prompt
 
+        payload = {
+            "model": self.model,
+            "prompt": full_user_prompt,
+            "system": system_prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0.0
+            }
+        }
+        
         response = self.session.post(
             self.endpoint,
-            json={"model": self.model, "prompt": full_prompt, "stream": False},
-            timeout=10,  # Back to original timeout
+            json=payload,
+            timeout=10,
         )
         
         result = response.json()["response"]

@@ -1,9 +1,9 @@
 import time
 from rag_query_classifier import QueryClassifier
 
-# Use phi3:mini for reliable classification (default)
+# Use phi3:instruct for reliable classification (default)
 # Other options: "tinyllama:latest", "llama2:7b", "mistral:7b", etc.
-qc = QueryClassifier("config.yaml", model="phi3:mini")
+qc = QueryClassifier("config.yaml", model="phi3:instruct")
 
 # Clear any existing cache to test fresh classifications
 if hasattr(qc, '_query_cache'):
@@ -26,7 +26,7 @@ queries = [
     "Is it safe to drink alcohol every day?",    # Cached (same as a previous query)
 ]
 
-print("Testing phi3:mini classifier performance...\n")
+print("Testing phi3:instruct classifier performance...\n")
 
 for i, query in enumerate(queries, 1):
     print(f"Query {i}: {query}")

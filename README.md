@@ -310,7 +310,7 @@ Our approach prioritizes **simplicity**, **speed**, and **maintainability** over
 classifier = QueryClassifier("config.yaml", model="tinyllama:latest")
 
 # Balanced model (default)
-classifier = QueryClassifier("config.yaml", model="phi3:mini")
+classifier = QueryClassifier("config.yaml", model="phi3:instruct")
 
 # Accurate model (slower)
 classifier = QueryClassifier("config.yaml", model="llama2:7b")
@@ -324,7 +324,7 @@ from rag_query_classifier import LLMClassifier
 # Use custom Ollama endpoint
 llm = LLMClassifier(
     endpoint="http://localhost:11434/api/generate",
-    model="phi3:mini"
+    model="phi3:instruct"
 )
 ```
 
