@@ -6,6 +6,7 @@ rules:
     - "order"
     - "subscription"
     - "reset password"
+    - "password"
   irrelevant_patterns:
     - "weather"
     - "sports"
