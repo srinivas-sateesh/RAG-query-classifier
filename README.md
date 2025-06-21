@@ -85,39 +85,65 @@ The classifier is configured via `config.yaml`. Here's the structure:
 ```yaml
 rules:
   relevant_keywords:
-    - "account"
-    - "invoice"
-    - "payment"
-    - "order"
-    - "subscription"
-    - "reset password"
-    - "password"
+    - "liver cirrhosis"
+    - "hepatitis c"
+    - "fatty liver disease"
+    - "liver function test"
+    - "liver cancer"
+    - "liver biopsy"
+    - "jaundice"
+    - "ascites"
+    - "alcoholic liver disease"
+    - "nash"
   irrelevant_patterns:
-    - "weather"
-    - "sports"
     - "joke"
-    - "news"
+    - "weather"
+    - "football"
     - "movie"
+    - "diabetes"
+    - "kidney stones"
+    - "heart disease"
+    - "lung disease"
+    - "thyroid"
+    - "cholesterol"
   vague_patterns:
-    - "help"
-    - "question"
-    - "info"
+    - "i need help"
+    - "can you assist me"
     - "support"
-    - "assist"
+    - "question"
+    - "xyz"
+    - "asdfgh"
 
 examples:
   relevant:
-    - "How do I reset my account password?"
-    - "What is the status of my last order?"
-    - "Can I get a copy of my invoice?"
+    - "What are the symptoms of liver cirrhosis?"
+    - "How is hepatitis C diagnosed?"
+    - "What is the treatment for fatty liver disease?"
+    - "How do I interpret liver function test results?"
+    - "How is alcoholic liver disease treated?"
+    - "What are the complications of liver failure?"
+    - "How is liver cancer diagnosed?"
+    - "How do I prepare for a liver biopsy?"
+    - "What causes jaundice in adults?"
+    - "What is the prognosis for NASH?"
   irrelevant:
     - "Tell me a joke."
     - "What's the weather today?"
     - "Who won the football game?"
+    - "Show me the latest movie releases."
+    - "What's the best diet for diabetes?"
+    - "How to treat kidney stones?"
+    - "What causes heart disease?"
+    - "How to improve lung function?"
+    - "What causes thyroid problems?"
+    - "How to lower cholesterol?"
   vague:
     - "I need help."
     - "Can you assist me?"
     - "Support."
+    - "Question."
+    - "xyz"
+    - "asdfgh"
 ```
 
 ### Configuration Options
@@ -138,7 +164,7 @@ from rag_query_classifier import QueryClassifier
 classifier = QueryClassifier("config.yaml")
 
 # Classify a query
-result = classifier.classify("How do I reset my password?")
+result = classifier.classify("What are the symptoms of liver cirrhosis?")
 
 print(f"Label: {result.label.value}")
 print(f"Confidence: {result.confidence_score}")
@@ -156,9 +182,9 @@ from rag_query_classifier import QueryClassifier
 classifier = QueryClassifier("config.yaml")
 
 queries = [
-    "How do I change my password?",
+    "What are the symptoms of liver cirrhosis?",
     "What's the weather like?",
-    "I need help with my account",
+    "I need help.",
     "Tell me a joke",
     "asdfgh"  # gibberish
 ]
